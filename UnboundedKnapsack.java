@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UnboundedKnapsack {
-
+ //Rod cutting problem is same as this
 	static int t[][] = new int[1005][1006];
 
 	static List<List<Integer>> l = new ArrayList<>();
