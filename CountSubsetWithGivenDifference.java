@@ -4,42 +4,60 @@ import java.util.Arrays;
 
 public class CountSubsetWithGivenDifference {
 	//Target sum problem is same as this
-	static Integer t[][] = new Integer[100][100];
-
+//some correction has been done in this code
 	public static void main(String[] args) {
-		for (Integer[] row : t)
-			Arrays.fill(row, -1);
 		
-
-		int arr[]= {1,1,2,3};
+		int arr[]= {0,0,0,0,0,0,0,0,1};
 		int diff = 1;
 		int range = 0;
 		for(int i=0;i<arr.length;i++) {
 			range+=arr[i];
 		}
 		int sumToCheck= (range + diff)/2;
-		System.out.println(CountSubsetSum(arr,4,sumToCheck));
+		System.out.println(findTargetSumWays(arr,sumToCheck));
 	}
 
-	static Integer CountSubsetSum(int set[], int n, int sum) {
-		// Base Cases
-		if (sum == 0)
-			return 1;
-		if (n == 0 && sum != 0)
+	 public static int findTargetSumWays(int[] arr, int target) {
+			int diff = target;
+			int range = 0;
+			for(int i=0;i<arr.length;i++) {
+				range+=arr[i];
+			}
+			if(target>range)
 			return 0;
-		if (t[n][sum] != -1)
-			return t[n][sum];
-		// If last element is greater than
-		// sum, then ignore it
-		if (set[n - 1] > sum)
-			t[n][sum] = CountSubsetSum(set, n - 1, sum);
+			if((range+diff)%2!=0)
+			return 0;
+			int sumToCheck= (range + diff)/2;
+			if(sumToCheck<0)
+			return 0;
 
-		/*
-		 * else, check if sum can be obtained by any of the following (a) including the
-		 * last element (b) excluding the last element
-		 */
-		else
-			t[n][sum] = CountSubsetSum(set, n - 1, sum) + CountSubsetSum(set, n - 1, sum - set[n - 1]);
-		return t[n][sum];
+	        return CountSubsets(arr,arr.length,sumToCheck);
+	    }
+
+	   static int CountSubsets(int arr[], int n, int sum) {
+		int  t[][] = new int[n+1][sum+1]; // DP - matrix
+		// initialization 
+	  // here we are setting 1st row and 1st column 
+	  // i denotes the size of the array 
+	  // j denotes the target sum (subset sum)
+		for (int i = 0; i <= n; i++) {
+			for (int j = 0; j <= sum; j++) {
+				if (i == 0) // when array(i) is empty than there is no meaning of sum of elements so return count of subset as 0;
+					t[i][j] = 0;
+				if (j == 0) // when sum(j) is zero and there is always a chance of empty subset so return count as 1;
+					t[i][j] = 1;
+			}
+		}
+
+		for (int i = 1; i <= n; i++) {
+			for (int j = 0; j <= sum; j++) {
+				if (arr[i - 1] <= j) // when element in the list is less then target sum 
+					t[i][j] = t[i - 1][j - arr[i - 1]] + t[i - 1][j]; // either exclude or inxlude and add both of them to get final count 
+				else
+					t[i][j] = t[i - 1][j]; // exclude when element in the list is greater then the sum 
+			}
+		}
+
+		return t[n][sum]; // finally return the last row and last column element 
 	}
 }
