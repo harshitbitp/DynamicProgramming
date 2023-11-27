@@ -41,7 +41,7 @@ public class CountSubsetWithGivenDifference {
 	  // i denotes the size of the array 
 	  // j denotes the target sum (subset sum)
 		for (int i = 0; i <= n; i++) {
-			for (int j = 0; j <= sum; j++) {
+			for (int j = 0; j <= sum; j++) {// NOTE:-----here as correction j start from 0 instead of 1 
 				if (i == 0) // when array(i) is empty than there is no meaning of sum of elements so return count of subset as 0;
 					t[i][j] = 0;
 				if (j == 0) // when sum(j) is zero and there is always a chance of empty subset so return count as 1;
